@@ -5,8 +5,8 @@ export const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0px 40px;
-  height: 90px;
-  background-color: #00008b;
+  height: 60px;
+  background-color: #1c1c1c;
 
   > div {
     cursor: pointer;
@@ -22,7 +22,7 @@ export const Container = styled.header`
   }
 
   > div img {
-    width: 55px;
+    width: 40px;
   }
 
   ul {

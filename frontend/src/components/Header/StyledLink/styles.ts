@@ -9,7 +9,7 @@ type Props = {
 
 export const StyledLink = styled(Link)<Props>`
   text-decoration: none;
-  font-size: 30px;
+  font-size: 24px;
   color: white;
   transition: 0.2s ease;
   border-bottom: ${(props) => (props.isThisPage ? "3px solid white" : "none")};
