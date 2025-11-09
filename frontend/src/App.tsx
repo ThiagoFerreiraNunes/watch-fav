@@ -1,10 +1,16 @@
-import { BrowserRouter, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import { BasePage } from "./pages/BasePage";
+import { Home } from "./pages/Home";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes></Routes>
+      <Routes>
+        <Route path="/" element={<BasePage />}>
+          <Route path="/home" element={<Home />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 };
