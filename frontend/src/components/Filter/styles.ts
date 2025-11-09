@@ -7,6 +7,7 @@ export const Container = styled.select`
   font-size: 16px;
   border-radius: 10px;
   font-weight: 700;
+  cursor: pointer;
 `;
 
 export const Option = styled.option`
