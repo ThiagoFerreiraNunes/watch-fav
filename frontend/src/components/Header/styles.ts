@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.header`
@@ -30,16 +29,5 @@ export const Container = styled.header`
     display: flex;
     gap: 40px;
     list-style-type: none;
-  }
-`;
-
-export const StyledLink = styled(Link)`
-  text-decoration: none;
-  font-size: 30px;
-  color: white;
-  transition: 0.2s ease;
-
-  &:hover {
-    opacity: 0.5;
   }
 `;
