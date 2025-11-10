@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Container = styled.li``;
 
 type Props = {
-  isThisPage: boolean;
+  $isThisPage: boolean;
 };
 
 export const StyledLink = styled(Link)<Props>`
@@ -12,7 +12,7 @@ export const StyledLink = styled(Link)<Props>`
   font-size: 24px;
   color: white;
   transition: 0.2s ease;
-  border-bottom: ${(props) => (props.isThisPage ? "3px solid white" : "none")};
+  border-bottom: ${(props) => (props.$isThisPage ? "3px solid white" : "none")};
 
   &:hover {
     opacity: 0.5;
