@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Container = styled.header`
@@ -6,8 +5,8 @@ export const Container = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0px 40px;
-  height: 90px;
-  background-color: #00008b;
+  height: 60px;
+  background-color: #1c1c1c;
 
   > div {
     cursor: pointer;
@@ -23,23 +22,12 @@ export const Container = styled.header`
   }
 
   > div img {
-    width: 55px;
+    width: 40px;
   }
 
   ul {
     display: flex;
     gap: 40px;
     list-style-type: none;
-  }
-`;
-
-export const StyledLink = styled(Link)`
-  text-decoration: none;
-  font-size: 30px;
-  color: white;
-  transition: 0.2s ease;
-
-  &:hover {
-    opacity: 0.5;
   }
 `;
