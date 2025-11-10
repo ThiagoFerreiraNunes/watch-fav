@@ -1,7 +1,7 @@
 import * as S from "./styles";
 import icon from "../../assets/icon.png";
 import { useNavigate } from "react-router-dom";
-import { StyledLink } from "./StyledLink";
+import { NavLink } from "./NavLink";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -19,10 +19,10 @@ export const Header = () => {
 
       <nav>
         <ul>
-          <StyledLink to="/home">Início</StyledLink>
-          <StyledLink to="/movies">Filmes</StyledLink>
-          <StyledLink to="/series">Séries</StyledLink>
-          <StyledLink to="/suggestions">Sugestões</StyledLink>
+          <NavLink to="/home">Início</NavLink>
+          <NavLink to="/movies">Filmes</NavLink>
+          <NavLink to="/series">Séries</NavLink>
+          <NavLink to="/suggestions">Sugestões</NavLink>
         </ul>
       </nav>
     </S.Container>

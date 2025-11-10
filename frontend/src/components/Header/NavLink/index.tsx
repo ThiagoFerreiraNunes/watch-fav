@@ -6,7 +6,7 @@ type Props = {
   children: string;
 };
 
-export const StyledLink = ({ to, children }: Props) => {
+export const NavLink = ({ to, children }: Props) => {
   const location = useLocation();
   const isThisPage: boolean = location.pathname == to;
 
