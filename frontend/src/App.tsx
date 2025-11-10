@@ -4,6 +4,7 @@ import { BasePage } from "./pages/BasePage";
 import { Home } from "./pages/Home";
 import { Movies } from "./pages/Movies";
 import { Series } from "./pages/Series";
+import { Suggestions } from "./pages/Suggestions";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/movies" element={<Movies />} />
           <Route path="/series" element={<Series />} />
+          <Route path="/suggestions" element={<Suggestions />} />
         </Route>
       </Routes>
     </BrowserRouter>

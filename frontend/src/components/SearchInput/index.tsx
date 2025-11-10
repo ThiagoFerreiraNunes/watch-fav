@@ -5,7 +5,7 @@ type Props = {
   placeholder: string;
 };
 
-export const Input = ({ placeholder }: Props) => {
+export const SearchInput = ({ placeholder }: Props) => {
   return (
     <S.Container>
       <input type="search" placeholder={placeholder} />

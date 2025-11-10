@@ -1,5 +1,5 @@
 import { Filter } from "../../components/Filter";
-import { Input } from "../../components/Input";
+import { SearchInput } from "../../components/SearchInput";
 import { MovieList } from "../../components/MovieList";
 import * as S from "./styles";
 
@@ -7,7 +7,7 @@ export const Movies = () => {
   return (
     <S.Container>
       <div>
-        <Input placeholder="Busque por filmes..." />
+        <SearchInput placeholder="Busque por filmes..." />
         <Filter />
       </div>
       <MovieList />

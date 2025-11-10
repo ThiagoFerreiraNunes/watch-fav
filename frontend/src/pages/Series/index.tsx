@@ -1,5 +1,5 @@
 import { Filter } from "../../components/Filter";
-import { Input } from "../../components/Input";
+import { SearchInput } from "../../components/SearchInput";
 import { SeriesList } from "../../components/SeriesList";
 import * as S from "./styles";
 
@@ -7,7 +7,7 @@ export const Series = () => {
   return (
     <S.Container>
       <div>
-        <Input placeholder="Busque por series..." />
+        <SearchInput placeholder="Busque por series..." />
         <Filter />
       </div>
       <SeriesList />
