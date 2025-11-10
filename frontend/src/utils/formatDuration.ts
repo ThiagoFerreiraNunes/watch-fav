@@ -1,16 +1,19 @@
 export const formatDuration = (duration: string): string => {
-  const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-  if (!match) return duration;
+  const parts = duration.split(":");
 
-  const hours = match[1] ? parseInt(match[1]) : 0;
-  const minutes = match[2] ? parseInt(match[2]) : 0;
+  if (parts.length < 2) return duration;
+
+  const hours = parseInt(parts[0], 10);
+  const minutes = parseInt(parts[1], 10);
 
   let result = "";
+
   if (hours > 0) {
     result += `${hours}h `;
   }
   if (minutes > 0) {
     result += `${minutes}min`;
   }
+
   return result.trim() || "Duração indefinida";
 };
