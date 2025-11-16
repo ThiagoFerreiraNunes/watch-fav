@@ -5,11 +5,14 @@ import { Home } from "./pages/Home";
 import { Movies } from "./pages/Movies";
 import { Series } from "./pages/Series";
 import { Suggestions } from "./pages/Suggestions";
+import { Login } from "./pages/Login";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<Login />} />
+
         <Route path="/" element={<BasePage />}>
           <Route path="/home" element={<Home />} />
           <Route path="/movies" element={<Movies />} />

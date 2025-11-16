@@ -12,9 +12,9 @@ export const NavLink = ({ to, children }: Props) => {
 
   return (
     <S.Container>
-      <S.StyledLink $isThisPage={isThisPage} to={to}>
+      <S.StyledLinkHome $isThisPage={isThisPage} to={to}>
         {children}
-      </S.StyledLink>
+      </S.StyledLinkHome>
     </S.Container>
   );
 };
