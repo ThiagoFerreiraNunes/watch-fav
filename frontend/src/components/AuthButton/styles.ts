@@ -11,6 +11,7 @@ export const Container = styled.button`
   color: white;
   background-color: #1c1c1c;
   padding: 5px;
+  width: 100%;
 
   &:hover {
     opacity: 0.8;
