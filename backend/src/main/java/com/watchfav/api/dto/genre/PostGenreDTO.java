@@ -1,4 +1,6 @@
 package com.watchfav.api.dto.genre;
 
-public class PostGenreDTO {
-}
+import jakarta.validation.constraints.NotBlank;
+
+public record PostGenreDTO(@NotBlank String name
+){}

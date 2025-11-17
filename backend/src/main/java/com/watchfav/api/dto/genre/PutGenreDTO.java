@@ -1,4 +1,4 @@
 package com.watchfav.api.dto.genre;
 
-public class PutGenreDTO {
+public record PutGenreDTO(String name) {
 }
