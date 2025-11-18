@@ -54,6 +54,7 @@ public class Streaming implements HasAvailability{
         return movies;
     }
 
+    @Override
     public Boolean getIsAvailable() {
         return isAvailable;
     }

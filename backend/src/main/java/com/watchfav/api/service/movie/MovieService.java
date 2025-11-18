@@ -5,7 +5,6 @@ import com.watchfav.api.dto.movies.GetMovieDetailsDTO;
 import com.watchfav.api.dto.movies.PostMovieDTO;
 import com.watchfav.api.dto.movies.PutMovieDTO;
 import com.watchfav.api.exception.BusinessRuleException;
-import com.watchfav.api.exception.ResourceNotFoundException;
 import com.watchfav.api.model.*;
 import com.watchfav.api.repository.*;
 import com.watchfav.api.service.commonValidation.EntitiesValidator;
