@@ -4,48 +4,47 @@ import com.watchfav.api.dto.actor.GetActorDTO;
 import com.watchfav.api.dto.actor.PostActorDTO;
 import com.watchfav.api.dto.actor.PutActorDTO;
 import com.watchfav.api.exception.BusinessRuleException;
-import com.watchfav.api.exception.ResourceNotFoundException;
 import com.watchfav.api.model.Actor;
 import com.watchfav.api.model.Country;
-import com.watchfav.api.repository.ActorDAO;
-import com.watchfav.api.repository.CountryDAO;
+import com.watchfav.api.repository.ActorRepository;
+import com.watchfav.api.repository.CountryRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class ActorService {
+    @Autowired
+    private ActorRepository actorRepository;
 
     @Autowired
-    private ActorDAO actorDAO;
-
-    @Autowired
-    private CountryDAO countryDAO;
+    private CountryRepository countryRepository;
 
     @Transactional
     public GetActorDTO postAnActor(PostActorDTO data){
-        Country country = countryDAO.findById(data.countryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Country not found."));
+        Country country = countryRepository.findById(data.countryId())
+                .orElseThrow(() -> new EntityNotFoundException("Country not found."));
 
         if(Boolean.FALSE.equals(country.getIsAvailable())){
             throw new BusinessRuleException("Country is deleted.");
         }
 
         Actor actor = new Actor(data, country);
-        actor = actorDAO.save(actor);
+        actorRepository.save(actor);
 
         return new GetActorDTO(actor);
     }
 
     public List<GetActorDTO> getAllActors(){
-        return actorDAO.findAllAvailableAndSort().stream().map(GetActorDTO::new).toList();
+        return actorRepository.findAllByAvailableAndSort().stream().map(GetActorDTO::new).toList();
     }
 
     public GetActorDTO getAnActor(Long id){
-        Actor actor = actorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Actor not found."));
+        Actor actor = actorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Actor not found."));
 
         if(Boolean.FALSE.equals(actor.getIsAvailable())){
             throw new BusinessRuleException("Actor is deleted");
@@ -56,8 +55,8 @@ public class ActorService {
 
     @Transactional
     public GetActorDTO putAnActor(Long id, PutActorDTO data){
-        Actor actor = actorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Actor not found."));
+        Actor actor = actorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Actor not found."));
 
         if(Boolean.FALSE.equals(actor.getIsAvailable())){
             throw new BusinessRuleException("Actor is deleted");
@@ -66,42 +65,41 @@ public class ActorService {
         Country country = null;
 
         if(data.countryId() != null){
-            country = countryDAO.findById(data.countryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Country not found."));
+            country = countryRepository.findById(data.countryId())
+                    .orElseThrow(() -> new EntityNotFoundException("Country not found."));
 
             if(Boolean.FALSE.equals(country.getIsAvailable())){
                 throw new BusinessRuleException("Country is deleted");
             }
         }
+
         actor.updateData(data, country);
-        actorDAO.save(actor);
 
         return new GetActorDTO(actor);
     }
 
     @Transactional
     public void deleteAnActor(Long id){
-        Actor actor = actorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Actor not found."));
+        Actor actor = actorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Actor not found."));
 
         if(Boolean.FALSE.equals(actor.getIsAvailable())){
             throw new BusinessRuleException("Actor is already deleted");
         }
+
         actor.delete();
-        actorDAO.updateIsAvailable(id, actor.getIsAvailable());
     }
 
     @Transactional
     public GetActorDTO reactivateAnActor(Long id){
-        Actor actor = actorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Actor not found."));
+        Actor actor = actorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Actor not found."));
 
         if(Boolean.TRUE.equals(actor.getIsAvailable())){
-            throw new BusinessRuleException("Actor is already active");
+            throw new BusinessRuleException("Actor is already activate");
         }
 
         actor.reactivate();
-        actorDAO.updateIsAvailable(id, actor.getIsAvailable());
         return new GetActorDTO(actor);
     }
 }
