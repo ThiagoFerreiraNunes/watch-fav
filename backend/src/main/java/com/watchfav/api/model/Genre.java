@@ -3,39 +3,45 @@ package com.watchfav.api.model;
 import com.watchfav.api.dto.genre.PostGenreDTO;
 import com.watchfav.api.dto.genre.PutGenreDTO;
 import com.watchfav.api.model.common.HasAvailability;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "tb_genres")
+@Entity(name = "Genre")
 public class Genre implements HasAvailability {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "genre_id")
     private Long id;
+
+    @Column(name = "genre_name")
     private String name;
+
+    @ManyToMany(mappedBy = "genres")
+    private List<Movie> movies = new ArrayList<>();
+
+    @Column(name = "is_available")
     private Boolean isAvailable;
 
-    public Genre() {}
+    public Genre(){}
 
-    public Genre(PostGenreDTO data) {
+    public Genre(PostGenreDTO data){
         this.name = data.name();
         this.isAvailable = true;
-    }
-
-    public Genre(Long id, String name, Boolean isAvailable) {
-        this.id = id;
-        this.name = name;
-        this.isAvailable = isAvailable;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<Movie> getMovies() {
+        return movies;
     }
 
     @Override
@@ -43,12 +49,8 @@ public class Genre implements HasAvailability {
         return isAvailable;
     }
 
-    public void setIsAvailable(Boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
-
-    public void updateData(PutGenreDTO data) {
-        if (data.name() != null) name = data.name();
+    public void updateData(PutGenreDTO data){
+        if(data.name() != null) name = data.name();
     }
 
     public void delete() {
