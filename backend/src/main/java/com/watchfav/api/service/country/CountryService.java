@@ -42,7 +42,7 @@ public class CountryService {
         return new GetCountryDTO(country);
     }
 
-    @jakarta.transaction.Transactional
+    @Transactional
     public GetCountryDTO putACountry(Long id, PutCountryDTO data){
         Country country = countryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Country not found."));
@@ -55,7 +55,7 @@ public class CountryService {
         return new GetCountryDTO(country);
     }
 
-    @jakarta.transaction.Transactional
+    @Transactional
     public void deleteACountry(Long id){
         Country country = countryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Country not found."));
