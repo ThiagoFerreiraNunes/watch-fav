@@ -31,7 +31,6 @@ public class MovieController {
         return ResponseEntity.created(uri).body(movie);
     }
 
-    // Endpoint de Paginação
     @GetMapping
     public ResponseEntity<Page<GetMovieDTO>> getAllMovies(@PageableDefault(size = 20, sort = {"name"}) Pageable pageable){
         return ResponseEntity.ok(movieService.getAllMovies(pageable));
