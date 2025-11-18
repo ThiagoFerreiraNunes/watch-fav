@@ -8,10 +8,12 @@ import com.watchfav.api.exception.ResourceNotFoundException;
 import com.watchfav.api.model.Country;
 import com.watchfav.api.model.Director;
 import com.watchfav.api.repository.CountryDAO;
-import com.watchfav.api.repository.DirectorDAO;
+import com.watchfav.api.repository.CountryRepository;
+import com.watchfav.api.repository.DirectorRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,36 +21,36 @@ import java.util.List;
 public class DirectorService {
 
     @Autowired
-    private DirectorDAO directorDAO;
+    private DirectorRepository directorRepository;
 
     @Autowired
-    private CountryDAO countryDAO;
+    private CountryRepository countryRepository;
 
     @Transactional
     public GetDirectorDTO postADirector(PostDirectorDTO data){
-        Country country = countryDAO.findById(data.countryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Country not found."));
+        Country country = countryRepository.findById(data.countryId())
+                .orElseThrow(() -> new EntityNotFoundException("Country not found."));
 
         if(Boolean.FALSE.equals(country.getIsAvailable())){
             throw new BusinessRuleException("Country is deleted.");
         }
 
         Director director = new Director(data, country);
-        director = directorDAO.save(director);
+        directorRepository.save(director);
 
         return new GetDirectorDTO(director);
     }
 
     public List<GetDirectorDTO> getAllDirectors(){
-        return directorDAO.findAllAvailableAndSort().stream().map(GetDirectorDTO::new).toList();
+        return directorRepository.findAllByAvailableAndSort().stream().map(GetDirectorDTO::new).toList();
     }
 
     public GetDirectorDTO getADirector(Long id){
-        Director director = directorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Director not found."));
+        Director director = directorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Director not found."));
 
         if(Boolean.FALSE.equals(director.getIsAvailable())){
-            throw new BusinessRuleException("Director is deleted");
+            throw new EntityNotFoundException("Director is deleted");
         }
 
         return new GetDirectorDTO(director);
@@ -56,52 +58,51 @@ public class DirectorService {
 
     @Transactional
     public GetDirectorDTO putADirector(Long id, PutDirectorDTO data){
-        Director director = directorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Director not found."));
+        Director director = directorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Director not found."));
 
         if(Boolean.FALSE.equals(director.getIsAvailable())){
-            throw new BusinessRuleException("Director is deleted");
+            throw new EntityNotFoundException("Director is deleted");
         }
 
         Country country = null;
 
         if(data.countryId() != null){
-            country = countryDAO.findById(data.countryId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Country not found."));
+            country = countryRepository.findById(data.countryId())
+                    .orElseThrow(() -> new EntityNotFoundException("Country not found."));
 
             if(Boolean.FALSE.equals(country.getIsAvailable())){
-                throw new BusinessRuleException("Country is deleted");
+                throw new EntityNotFoundException("Country is deleted");
             }
         }
 
         director.updateData(data, country);
-        directorDAO.save(director);
         return new GetDirectorDTO(director);
     }
 
     @Transactional
     public void deleteADirector(Long id){
-        Director director = directorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Director not found."));
+        Director director = directorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Director not found."));
 
         if(Boolean.FALSE.equals(director.getIsAvailable())){
-            throw new BusinessRuleException("Director is already deleted.");
+            throw new EntityNotFoundException("Director is already deleted.");
         }
+
         director.delete();
-        directorDAO.updateIsAvailable(id, director.getIsAvailable());
     }
 
     @Transactional
     public GetDirectorDTO reactivateADirector(Long id){
-        Director director = directorDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Director not found."));
+        Director director = directorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Director not found."));
 
         if(Boolean.TRUE.equals(director.getIsAvailable())){
-            throw new BusinessRuleException("Director is already active.");
+            throw new EntityNotFoundException("Director is already active.");
         }
 
         director.reactivate();
-        directorDAO.updateIsAvailable(id, director.getIsAvailable());
         return new GetDirectorDTO(director);
     }
+
 }

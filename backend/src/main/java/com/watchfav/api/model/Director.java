@@ -3,17 +3,35 @@ package com.watchfav.api.model;
 import com.watchfav.api.dto.director.PostDirectorDTO;
 import com.watchfav.api.dto.director.PutDirectorDTO;
 import com.watchfav.api.model.common.HasAvailability;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
+@Table(name = "tb_directors")
+@Entity(name = "Director")
 public class Director implements HasAvailability {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "director_id")
     private Long id;
+
+    @Column(name = "director_name")
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
     private Country country;
+
+    @ManyToMany(mappedBy = "directors")
+    private List<Movie> movies = new ArrayList<>();
+
+    @Column(name = "is_available")
     private Boolean isAvailable;
 
-    public Director() {}
+    public Director(){}
 
-    public Director(PostDirectorDTO data, Country country) {
+    public Director(PostDirectorDTO data, Country country){
         this.name = data.name();
         this.country = country;
         this.isAvailable = true;
@@ -23,24 +41,16 @@ public class Director implements HasAvailability {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Country getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public List<Movie> getMovies() {
+        return movies;
     }
 
     @Override
@@ -48,13 +58,9 @@ public class Director implements HasAvailability {
         return isAvailable;
     }
 
-    public void setIsAvailable(Boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
-
-    public void updateData(PutDirectorDTO data, Country country) {
-        if (data.name() != null) name = data.name();
-        if (country != null) this.country = country;
+    public void updateData(PutDirectorDTO data, Country country){
+        if(data.name() != null) name = data.name();
+        if(country != null) this.country = country;
     }
 
     public void delete() {
@@ -65,3 +71,4 @@ public class Director implements HasAvailability {
         isAvailable = true;
     }
 }
+
