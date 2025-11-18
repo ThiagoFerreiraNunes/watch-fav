@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,9 @@ public class ActorDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final RowMapper<Actor> actorRowMapper = (rs, rowNum) -> {
         Country country = new Country(
@@ -61,6 +67,23 @@ public class ActorDAO {
             );
         }
         return actor;
+    }
+
+    public List<Actor> findAllById(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        final String sql = "SELECT " +
+                "a.actor_id, a.actor_name, a.is_available AS a_is_available, " +
+                "c.country_id, c.country_name, c.is_available AS c_is_available " +
+                "FROM tb_actors a INNER JOIN tb_countries c ON a.country_id = c.country_id " +
+                "WHERE a.actor_id IN (:ids)";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("ids", ids);
+
+        return namedParameterJdbcTemplate.query(sql, parameters, actorRowMapper);
     }
 
     public Optional<Actor> findById(Long id) {

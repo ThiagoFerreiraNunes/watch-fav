@@ -5,11 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +21,9 @@ public class GenreDAO {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final RowMapper<Genre> rowMapper = (rs, rowNum) -> new Genre(
             rs.getLong("genre_id"),
@@ -48,6 +54,19 @@ public class GenreDAO {
             );
         }
         return genre;
+    }
+
+    public List<Genre> findAllById(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        String sql = "SELECT * FROM tb_genres WHERE genre_id IN (:ids)";
+
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("ids", ids);
+
+        return namedParameterJdbcTemplate.query(sql, parameters, rowMapper);
     }
 
     public Optional<Genre> findById(Long id) {
