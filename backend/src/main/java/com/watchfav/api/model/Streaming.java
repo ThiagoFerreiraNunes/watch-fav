@@ -3,15 +3,33 @@ package com.watchfav.api.model;
 import com.watchfav.api.dto.streaming.PostStreamingDTO;
 import com.watchfav.api.dto.streaming.PutStreamingDTO;
 import com.watchfav.api.model.common.HasAvailability;
+import jakarta.persistence.*;
 
-public class Streaming implements HasAvailability {
+import java.util.ArrayList;
+import java.util.List;
 
+@Table(name = "tb_streamings")
+@Entity(name = "Streaming")
+public class Streaming implements HasAvailability{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "streaming_id")
     private Long id;
+
+    @Column(name = "streaming_name")
     private String name;
+
+    @Column(name = "streaming_url")
     private String url;
+
+    @ManyToMany(mappedBy = "streamings")
+    private List<Movie> movies = new ArrayList<>();
+
+    @Column(name = "is_available")
     private Boolean isAvailable;
 
-    public Streaming() {}
+    public Streaming(){}
 
     public Streaming(PostStreamingDTO data) {
         this.name = data.name();
@@ -19,44 +37,25 @@ public class Streaming implements HasAvailability {
         this.isAvailable = true;
     }
 
-    public Streaming(Long id, String name, String url, Boolean isAvailable) {
-        this.id = id;
-        this.name = name;
-        this.url = url;
-        this.isAvailable = isAvailable;
-    }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public List<Movie> getMovies() {
+        return movies;
     }
 
-    @Override
     public Boolean getIsAvailable() {
         return isAvailable;
-    }
-
-    public void setIsAvailable(Boolean isAvailable) {
-        this.isAvailable = isAvailable;
     }
 
     public void updateData(PutStreamingDTO data) {

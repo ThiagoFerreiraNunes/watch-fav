@@ -4,12 +4,12 @@ import com.watchfav.api.dto.streaming.GetStreamingDTO;
 import com.watchfav.api.dto.streaming.PostStreamingDTO;
 import com.watchfav.api.dto.streaming.PutStreamingDTO;
 import com.watchfav.api.exception.BusinessRuleException;
-import com.watchfav.api.exception.ResourceNotFoundException;
 import com.watchfav.api.model.Streaming;
-import com.watchfav.api.repository.StreamingDAO;
+import com.watchfav.api.repository.StreamingRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,22 +17,23 @@ import java.util.List;
 public class StreamingService {
 
     @Autowired
-    private StreamingDAO streamingDAO;
+    StreamingRepository streamingRepository;
 
-    @Transactional
+    @jakarta.transaction.Transactional
     public GetStreamingDTO postAStreaming(PostStreamingDTO data) {
         Streaming streaming = new Streaming(data);
-        streaming = streamingDAO.save(streaming);
+        streamingRepository.save(streaming);
+
         return new GetStreamingDTO(streaming);
     }
 
     public List<GetStreamingDTO> getAllStreamings(){
-        return streamingDAO.findAllAvailableAndSort().stream().map(GetStreamingDTO::new).toList();
+        return streamingRepository.findAllByAvailableAndSort().stream().map(GetStreamingDTO::new).toList();
     }
 
     public GetStreamingDTO getAStreaming(Long id){
-        Streaming streaming = streamingDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Streaming not found"));
+        Streaming streaming = streamingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Streaming not found"));
 
         if(Boolean.FALSE.equals(streaming.getIsAvailable())){
             throw new BusinessRuleException("Streaming is deleted.");
@@ -41,42 +42,41 @@ public class StreamingService {
         return new GetStreamingDTO(streaming);
     }
 
-    @Transactional
+    @jakarta.transaction.Transactional
     public GetStreamingDTO putAStreaming(Long id, PutStreamingDTO data){
-        Streaming streaming = streamingDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Streaming not found"));
+        Streaming streaming = streamingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Streaming not found"));
 
         if(Boolean.FALSE.equals(streaming.getIsAvailable())){
             throw new BusinessRuleException("Streaming is deleted.");
         }
+
         streaming.updateData(data);
-        streamingDAO.save(streaming);
         return new GetStreamingDTO(streaming);
     }
 
-    @Transactional
+    @jakarta.transaction.Transactional
     public void deleteAStreaming(Long id){
-        Streaming streaming = streamingDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Streaming not found"));
+        Streaming streaming = streamingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Streaming not found"));
 
         if(Boolean.FALSE.equals(streaming.getIsAvailable())){
             throw new BusinessRuleException("Streaming is already deleted.");
         }
+
         streaming.delete();
-        streamingDAO.updateIsAvailable(id, streaming.getIsAvailable());
     }
 
     @Transactional
     public GetStreamingDTO reactivateAStreaming(Long id){
-        Streaming streaming = streamingDAO.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Streaming not found"));
+        Streaming streaming = streamingRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Streaming not found"));
 
         if(Boolean.TRUE.equals(streaming.getIsAvailable())){
             throw new BusinessRuleException("Streaming is already active.");
         }
-        streaming.reactivate();
-        streamingDAO.updateIsAvailable(id, streaming.getIsAvailable());
 
+        streaming.reactivate();
         return new GetStreamingDTO(streaming);
     }
 }
