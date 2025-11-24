@@ -31,6 +31,10 @@ public class StreamingService {
         return streamingRepository.findAllByAvailableAndSort().stream().map(GetStreamingDTO::new).toList();
     }
 
+    public List<GetStreamingDTO> searchStreamings(String text) {
+        return streamingRepository.findAllBySearch(text).stream().map(GetStreamingDTO::new).toList();
+    }
+
     public GetStreamingDTO getAStreaming(Long id){
         Streaming streaming = streamingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Streaming not found"));

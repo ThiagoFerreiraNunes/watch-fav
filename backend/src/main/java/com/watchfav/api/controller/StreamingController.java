@@ -33,6 +33,11 @@ public class StreamingController {
         return ResponseEntity.ok(streamingService.getAllStreamings());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<GetStreamingDTO>> searchStreamings(@RequestParam String text){
+        return ResponseEntity.ok(streamingService.searchStreamings(text));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GetStreamingDTO> getAStreaming(@PathVariable Long id){
         return ResponseEntity.ok(streamingService.getAStreaming(id));
