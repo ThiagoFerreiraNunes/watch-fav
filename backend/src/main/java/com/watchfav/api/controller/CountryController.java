@@ -33,6 +33,11 @@ public class CountryController {
         return ResponseEntity.ok(countryService.getAllCountries());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<GetCountryDTO>> searchCountries(@RequestParam String text){
+        return ResponseEntity.ok(countryService.searchCountries(text));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GetCountryDTO> getACountry(@PathVariable Long id){
         return ResponseEntity.ok(countryService.getACountry(id));

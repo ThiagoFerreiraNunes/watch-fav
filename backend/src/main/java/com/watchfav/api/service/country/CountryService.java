@@ -31,6 +31,10 @@ public class CountryService {
         return countryRepository.findAllByAvailableAndSort().stream().map(GetCountryDTO::new).toList();
     }
 
+    public List<GetCountryDTO> searchCountries(String text) {
+        return countryRepository.findAllBySearch(text).stream().map(GetCountryDTO::new).toList();
+    }
+
     public GetCountryDTO getACountry(Long id){
         Country country = countryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Country not found."));
