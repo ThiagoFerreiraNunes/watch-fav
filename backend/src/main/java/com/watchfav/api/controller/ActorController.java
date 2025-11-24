@@ -6,6 +6,8 @@ import com.watchfav.api.dto.actor.PutActorDTO;
 import com.watchfav.api.service.actor.ActorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,6 +33,11 @@ public class ActorController {
     @GetMapping
     public ResponseEntity<List<GetActorDTO>> getAllActors(){
         return ResponseEntity.ok(actorService.getAllActors());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<GetActorDTO>> searchActors(@RequestParam String text){
+        return ResponseEntity.ok(actorService.searchActors(text));
     }
 
     @GetMapping("/{id}")

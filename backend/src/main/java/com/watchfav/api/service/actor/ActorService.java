@@ -42,6 +42,10 @@ public class ActorService {
         return actorRepository.findAllByAvailableAndSort().stream().map(GetActorDTO::new).toList();
     }
 
+    public List<GetActorDTO> searchActors(String text) {
+        return actorRepository.findAllBySearch(text).stream().map(GetActorDTO::new).toList();
+    }
+
     public GetActorDTO getAnActor(Long id){
         Actor actor = actorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Actor not found."));
