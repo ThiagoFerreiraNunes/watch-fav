@@ -30,6 +30,10 @@ public class LanguageService {
         return languageRepository.findAllByAvailableAndSort().stream().map(GetLanguageDTO::new).toList();
     }
 
+    public List<GetLanguageDTO> searchLanguages(String text) {
+        return languageRepository.findAllBySearch(text).stream().map(GetLanguageDTO::new).toList();
+    }
+
     public GetLanguageDTO getALanguage(Long id){
         Language language = languageRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Language not found."));

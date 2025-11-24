@@ -1,5 +1,6 @@
 package com.watchfav.api.controller;
 
+import com.watchfav.api.dto.actor.GetActorDTO;
 import com.watchfav.api.dto.language.GetLanguageDTO;
 import com.watchfav.api.dto.language.PostLanguageDTO;
 import com.watchfav.api.dto.language.PutLanguageDTO;
@@ -31,6 +32,11 @@ public class LanguageController {
     @GetMapping
     public ResponseEntity<List<GetLanguageDTO>> getAllLanguages(){
         return ResponseEntity.ok(languageService.getAllLanguages());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<GetLanguageDTO>> searchLanguages(@RequestParam String text){
+        return ResponseEntity.ok(languageService.searchLanguages(text));
     }
 
     @GetMapping("/{id}")
