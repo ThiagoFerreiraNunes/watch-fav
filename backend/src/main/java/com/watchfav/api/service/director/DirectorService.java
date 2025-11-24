@@ -43,6 +43,10 @@ public class DirectorService {
         return directorRepository.findAllByAvailableAndSort().stream().map(GetDirectorDTO::new).toList();
     }
 
+    public List<GetDirectorDTO> searchDirectors(String text) {
+        return directorRepository.findAllBySearch(text).stream().map(GetDirectorDTO::new).toList();
+    }
+
     public GetDirectorDTO getADirector(Long id){
         Director director = directorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Director not found."));

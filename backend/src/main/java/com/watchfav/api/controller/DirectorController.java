@@ -1,5 +1,6 @@
 package com.watchfav.api.controller;
 
+import com.watchfav.api.dto.actor.GetActorDTO;
 import com.watchfav.api.dto.director.GetDirectorDTO;
 import com.watchfav.api.dto.director.PostDirectorDTO;
 import com.watchfav.api.dto.director.PutDirectorDTO;
@@ -31,6 +32,11 @@ public class DirectorController {
     @GetMapping
     public ResponseEntity<List<GetDirectorDTO>> getAllDirectors(){
         return ResponseEntity.ok(directorService.getAllDirectors());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<GetDirectorDTO>> searchDirectors(@RequestParam String text){
+        return ResponseEntity.ok(directorService.searchDirectors(text));
     }
 
     @GetMapping("/{id}")
