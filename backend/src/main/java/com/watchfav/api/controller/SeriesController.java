@@ -35,6 +35,11 @@ public class SeriesController {
         return ResponseEntity.ok(seriesService.getAllSeries(pageable));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<GetSeriesDTO>> searchSeries(@RequestParam String text, @PageableDefault(size = 20, sort = {"name"}) Pageable pageable){
+        return ResponseEntity.ok(seriesService.searchSeries(text, pageable));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GetSeriesDetailsDTO> getASeries(@PathVariable Long id){
         return ResponseEntity.ok(seriesService.getASeries(id));

@@ -58,6 +58,10 @@ public class SeriesService {
         return seriesRepository.findAllByAvailable(pageable).map(GetSeriesDTO::new);
     }
 
+    public Page<GetSeriesDTO> searchSeries(String text, Pageable pageable){
+        return seriesRepository.findAllBySearch(text, pageable).map(GetSeriesDTO::new);
+    }
+
     public GetSeriesDetailsDTO getASeries(Long id){
         Series series = seriesRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Series not found."));
