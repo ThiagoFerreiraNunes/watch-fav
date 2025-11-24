@@ -1,6 +1,5 @@
 package com.watchfav.api.controller;
 
-import com.watchfav.api.dto.actor.GetActorDTO;
 import com.watchfav.api.dto.language.GetLanguageDTO;
 import com.watchfav.api.dto.language.PostLanguageDTO;
 import com.watchfav.api.dto.language.PutLanguageDTO;
