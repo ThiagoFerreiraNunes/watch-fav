@@ -16,7 +16,7 @@ export const MovieList = () => {
         return response.json();
       })
       .then((data) => {
-        setMovies(data.movies);
+        setMovies(data.content);
       })
       .catch((error) => {
         console.error("Erro:", error);

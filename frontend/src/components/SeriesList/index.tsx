@@ -16,7 +16,7 @@ export const SeriesList = () => {
         return response.json();
       })
       .then((data) => {
-        setSeries(data.series);
+        setSeries(data.content);
       })
       .catch((error) => {
         console.error("Erro:", error);
