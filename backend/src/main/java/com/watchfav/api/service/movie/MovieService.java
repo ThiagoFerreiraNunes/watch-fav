@@ -67,6 +67,9 @@ public class MovieService {
     public Page<GetMovieDTO> getAllMovies(Pageable pageable){
         return movieRepository.findAllByAvailable(pageable).map(GetMovieDTO::new);
     }
+    public Page<GetMovieDTO> searchMovies(String text, Pageable pageable) {
+        return movieRepository.findAllBySearch(text, pageable).map(GetMovieDTO::new);
+    }
 
     public GetMovieDetailsDTO getAMovie(Long id){
         Movie movie = movieRepository.findById(id)
@@ -155,6 +158,7 @@ public class MovieService {
 
         return new GetMovieDetailsDTO(movie);
     }
+
 
 }
 

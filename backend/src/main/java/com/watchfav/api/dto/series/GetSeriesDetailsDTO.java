@@ -2,6 +2,7 @@ package com.watchfav.api.dto.series;
 
 import com.watchfav.api.dto.genre.GetGenreDTO;
 import com.watchfav.api.dto.language.GetLanguageDTO;
+import com.watchfav.api.dto.season.GetSeasonDTO;
 import com.watchfav.api.dto.streaming.GetStreamingDTO;
 import com.watchfav.api.model.Series;
 

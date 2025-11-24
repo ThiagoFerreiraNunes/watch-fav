@@ -36,6 +36,11 @@ public class MovieController {
         return ResponseEntity.ok(movieService.getAllMovies(pageable));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<GetMovieDTO>> searchMovies(@RequestParam String text, @PageableDefault(size = 20, sort = {"name"}) Pageable pageable){
+        return ResponseEntity.ok(movieService.searchMovies(text, pageable));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GetMovieDetailsDTO> getAMovie(@PathVariable Long id){
         return ResponseEntity.ok(movieService.getAMovie(id));

@@ -135,8 +135,8 @@ public class Series {
         if(data.releaseYear() != null) this.releaseYear = data.releaseYear();
         if(data.ageRating() != null) this.ageRating = data.ageRating();
         if(data.countryId() != null) this.country = country;
-        if(data.genresId() != null) this.genres = genres;
-        if(data.languagesId() != null) this.languages = languages;
+        if(data.genreIds() != null) this.genres = genres;
+        if(data.languageIds() != null) this.languages = languages;
     }
 
     public void delete() {
