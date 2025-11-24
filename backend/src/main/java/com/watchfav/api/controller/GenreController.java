@@ -33,6 +33,11 @@ public class GenreController {
         return ResponseEntity.ok(genreService.getAllGenres());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<GetGenreDTO>> searchGenres(@RequestParam String text){
+        return ResponseEntity.ok(genreService.searchGenres(text));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GetGenreDTO> getAGenre(@PathVariable Long id){
         return ResponseEntity.ok(genreService.getAGenre(id));

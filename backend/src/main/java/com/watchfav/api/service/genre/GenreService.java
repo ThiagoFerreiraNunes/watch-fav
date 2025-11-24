@@ -30,6 +30,10 @@ public class GenreService {
         return genreRepository.findAllByAvailableAndSort().stream().map(GetGenreDTO::new).toList();
     }
 
+    public List<GetGenreDTO> searchGenres(String text) {
+        return genreRepository.findAllBySearch(text).stream().map(GetGenreDTO::new).toList();
+    }
+
     public GetGenreDTO getAGenre(Long id){
         Genre genre = genreRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Genre not found."));
