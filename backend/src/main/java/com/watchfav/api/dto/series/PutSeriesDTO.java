@@ -12,6 +12,7 @@ public record PutSeriesDTO(
         AgeRating ageRating,
         Long countryId,
         List<Long> genreIds,
-        List<Long> languageIds
+        List<Long> languageIds,
+        List<Long> streamingIds
 ) {
 }

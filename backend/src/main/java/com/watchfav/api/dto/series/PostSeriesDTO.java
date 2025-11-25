@@ -15,6 +15,7 @@ public record PostSeriesDTO(
         @NotNull AgeRating ageRating,
         @NotNull Long countryId,
         @NotEmpty List<Long> genreIds,
-        @NotEmpty List<Long> languageIds
+        @NotEmpty List<Long> languageIds,
+        @NotEmpty List<Long> streamingIds
 ) {
 }

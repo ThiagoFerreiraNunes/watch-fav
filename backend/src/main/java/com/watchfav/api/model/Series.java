@@ -68,7 +68,7 @@ public class Series {
 
     public Series(){}
 
-    public Series(PostSeriesDTO data, Country country, List<Genre> genres, List<Language> languages) {
+    public Series(PostSeriesDTO data, Country country, List<Genre> genres, List<Language> languages, List<Streaming> streamings) {
         this.name = data.name();
         this.imageUrl = data.imageUrl();
         this.description = data.description();
@@ -77,6 +77,7 @@ public class Series {
         this.country = country;
         this.genres = genres;
         this.languages = languages;
+        this.streamings = streamings;
         this.isAvailable = true;
     }
 
@@ -128,7 +129,7 @@ public class Series {
         return isAvailable;
     }
 
-    public void updateData(PutSeriesDTO data, Country country, List<Genre> genres, List<Language> languages) {
+    public void updateData(PutSeriesDTO data, Country country, List<Genre> genres, List<Language> languages, List<Streaming> streamings) {
         if(data.name() != null) this.name = data.name();
         if(data.imageUrl() != null) this.imageUrl = data.imageUrl();
         if(data.description() != null) this.description = data.description();
@@ -137,6 +138,7 @@ public class Series {
         if(data.countryId() != null) this.country = country;
         if(data.genreIds() != null) this.genres = genres;
         if(data.languageIds() != null) this.languages = languages;
+        if(data.streamingIds() != null) this.streamings = streamings;
     }
 
     public void delete() {

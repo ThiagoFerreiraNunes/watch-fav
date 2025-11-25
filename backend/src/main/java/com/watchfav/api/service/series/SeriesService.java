@@ -5,14 +5,8 @@ import com.watchfav.api.dto.series.GetSeriesDetailsDTO;
 import com.watchfav.api.dto.series.PostSeriesDTO;
 import com.watchfav.api.dto.series.PutSeriesDTO;
 import com.watchfav.api.exception.BusinessRuleException;
-import com.watchfav.api.model.Country;
-import com.watchfav.api.model.Genre;
-import com.watchfav.api.model.Language;
-import com.watchfav.api.model.Series;
-import com.watchfav.api.repository.CountryRepository;
-import com.watchfav.api.repository.GenreRepository;
-import com.watchfav.api.repository.LanguageRepository;
-import com.watchfav.api.repository.SeriesRepository;
+import com.watchfav.api.model.*;
+import com.watchfav.api.repository.*;
 import com.watchfav.api.service.commonValidation.EntitiesValidator;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -30,6 +24,7 @@ public class SeriesService {
     @Autowired CountryRepository countryRepository;
     @Autowired GenreRepository genreRepository;
     @Autowired LanguageRepository languageRepository;
+    @Autowired StreamingRepository streamingRepository;
     @Autowired EntitiesValidator entitiesValidator;
     @Autowired SeriesRepository seriesRepository;
 
@@ -48,7 +43,10 @@ public class SeriesService {
         List<Language> languages = languageRepository.findAllById(data.languageIds());
         entitiesValidator.validate(languages, data.languageIds(), "Language");
 
-        Series series = new Series(data, country, genres, languages);
+        List<Streaming> streamings = streamingRepository.findAllById(data.streamingIds());
+        entitiesValidator.validate(streamings, data.streamingIds(), "Streaming");
+
+        Series series = new Series(data, country, genres, languages, streamings);
         seriesRepository.save(series);
 
         return new GetSeriesDetailsDTO(series);
@@ -85,6 +83,7 @@ public class SeriesService {
         Country country = null;
         List<Genre> genres = new ArrayList<>();
         List<Language> languages = new ArrayList<>();
+        List<Streaming> streamings = new ArrayList<>();
 
         if(data.countryId() != null){
             country = countryRepository.findById(data.countryId())
@@ -105,7 +104,12 @@ public class SeriesService {
             entitiesValidator.validate(languages, data.languageIds(), "Language");
         }
 
-        series.updateData(data, country, genres, languages);
+        if(data.streamingIds() != null) {
+            streamings = streamingRepository.findAllById(data.streamingIds());
+            entitiesValidator.validate(streamings, data.streamingIds(), "Streaming");
+        }
+
+        series.updateData(data, country, genres, languages, streamings);
         return new GetSeriesDetailsDTO(series);
     }
 
