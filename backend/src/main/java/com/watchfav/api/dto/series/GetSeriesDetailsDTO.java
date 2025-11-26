@@ -1,5 +1,6 @@
 package com.watchfav.api.dto.series;
 
+import com.watchfav.api.dto.country.GetCountryDTO;
 import com.watchfav.api.dto.genre.GetGenreDTO;
 import com.watchfav.api.dto.language.GetLanguageDTO;
 import com.watchfav.api.dto.season.GetSeasonDTO;
@@ -15,7 +16,7 @@ public record GetSeriesDetailsDTO(
         String description,
         Integer releaseYear,
         String ageRating,
-        String country,
+        GetCountryDTO country,
         List<GetGenreDTO> genres,
         List<GetLanguageDTO> languages,
         List<GetSeasonDTO> seasons,
@@ -30,7 +31,7 @@ public record GetSeriesDetailsDTO(
                 series.getDescription(),
                 series.getReleaseYear(),
                 series.getAgeRating().getName(),
-                series.getCountry().getName(),
+                new GetCountryDTO(series.getCountry()),
                 series.getGenres().stream().map(GetGenreDTO::new).toList(),
                 series.getLanguages().stream().map(GetLanguageDTO::new).toList(),
                 series.getSeasons().stream().map(GetSeasonDTO::new).toList(),
