@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import type { Movie } from "../../../interfaces/Movie/Movie";
 import { formatDuration } from "../../../utils/formatDuration";
 import * as S from "./styles";
@@ -7,8 +8,14 @@ type Props = {
 };
 
 export const MovieItem = ({ movie }: Props) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/movies/${movie.id}`);
+  };
+
   return (
-    <S.Container>
+    <S.Container onClick={handleClick}>
       <div>
         <img src={movie.imageUrl} alt="imagem do filme" />
       </div>
