@@ -19,7 +19,7 @@ public class StreamingService {
     @Autowired
     StreamingRepository streamingRepository;
 
-    @jakarta.transaction.Transactional
+    @Transactional
     public GetStreamingDTO postAStreaming(PostStreamingDTO data) {
         Streaming streaming = new Streaming(data);
         streamingRepository.save(streaming);
@@ -46,7 +46,7 @@ public class StreamingService {
         return new GetStreamingDTO(streaming);
     }
 
-    @jakarta.transaction.Transactional
+    @Transactional
     public GetStreamingDTO putAStreaming(Long id, PutStreamingDTO data){
         Streaming streaming = streamingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Streaming not found"));
@@ -59,7 +59,7 @@ public class StreamingService {
         return new GetStreamingDTO(streaming);
     }
 
-    @jakarta.transaction.Transactional
+    @Transactional
     public void deleteAStreaming(Long id){
         Streaming streaming = streamingRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Streaming not found"));

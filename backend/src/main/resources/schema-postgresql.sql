@@ -1,24 +1,3 @@
-CREATE TABLE IF NOT EXISTS tb_users (
-    user_id BIGSERIAL PRIMARY KEY,
-    user_name VARCHAR(50) NOT NULL,
-    user_email VARCHAR(100) NOT NULL UNIQUE,
-    user_password VARCHAR(255) NOT NULL,
-    is_available BOOLEAN NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS tb_roles (
-    role_id BIGSERIAL PRIMARY KEY,
-    role_name VARCHAR(50) NOT NULL UNIQUE,
-    is_available BOOLEAN NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS tb_user_roles (
-    user_id BIGINT NOT NULL,
-    role_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, role_id),
-    FOREIGN KEY (user_id) REFERENCES tb_users(user_id),
-    FOREIGN KEY (role_id) REFERENCES tb_roles(role_id)
-);
 
 CREATE TABLE IF NOT EXISTS tb_countries (
     country_id BIGSERIAL PRIMARY KEY,
@@ -42,19 +21,10 @@ CREATE TABLE IF NOT EXISTS tb_seasons (
     season_id BIGSERIAL PRIMARY KEY,
     season_number INT NOT NULL,
     release_year INT NOT NULL,
+    episodes INT NOT NULL,
     series_id BIGINT NOT NULL,
     is_available BOOLEAN NOT NULL,
     FOREIGN KEY (series_id) REFERENCES tb_series(series_id)
-);
-
-CREATE TABLE IF NOT EXISTS tb_episodes (
-    episode_id BIGSERIAL PRIMARY KEY,
-    episode_number INT NOT NULL,
-    episode_name VARCHAR(100) NOT NULL,
-    duration TIME NOT NULL,
-    season_id BIGINT NOT NULL,
-    is_available BOOLEAN NOT NULL,
-    FOREIGN KEY (season_id) REFERENCES tb_seasons(season_id)
 );
 
 CREATE TABLE IF NOT EXISTS tb_movies (
@@ -103,22 +73,6 @@ CREATE TABLE IF NOT EXISTS tb_directors (
     country_id BIGINT NOT NULL,
     is_available BOOLEAN NOT NULL,
     FOREIGN KEY (country_id) REFERENCES tb_countries(country_id)
-);
-
-CREATE TABLE IF NOT EXISTS tb_user_favorite_movies (
-    user_id BIGINT NOT NULL,
-    movie_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, movie_id),
-    FOREIGN KEY (user_id) REFERENCES tb_users(user_id),
-    FOREIGN KEY (movie_id) REFERENCES tb_movies(movie_id)
-);
-
-CREATE TABLE IF NOT EXISTS tb_user_favorite_series (
-    user_id BIGINT NOT NULL,
-    series_id BIGINT NOT NULL,
-    PRIMARY KEY (user_id, series_id),
-    FOREIGN KEY (user_id) REFERENCES tb_users(user_id),
-    FOREIGN KEY (series_id) REFERENCES tb_series(series_id)
 );
 
 CREATE TABLE IF NOT EXISTS tb_movies_streamings (
@@ -177,26 +131,10 @@ CREATE TABLE IF NOT EXISTS tb_movies_actors (
     FOREIGN KEY (actor_id) REFERENCES tb_actors(actor_id)
 );
 
-CREATE TABLE IF NOT EXISTS tb_episodes_actors (
-    episode_id BIGINT NOT NULL,
-    actor_id BIGINT NOT NULL,
-    PRIMARY KEY (episode_id, actor_id),
-    FOREIGN KEY (episode_id) REFERENCES tb_episodes(episode_id),
-    FOREIGN KEY (actor_id) REFERENCES tb_actors(actor_id)
-);
-
 CREATE TABLE IF NOT EXISTS tb_movies_directors (
     movie_id BIGINT NOT NULL,
     director_id BIGINT NOT NULL,
     PRIMARY KEY (movie_id, director_id),
     FOREIGN KEY (movie_id) REFERENCES tb_movies(movie_id),
-    FOREIGN KEY (director_id) REFERENCES tb_directors(director_id)
-);
-
-CREATE TABLE IF NOT EXISTS tb_episodes_directors (
-    episode_id BIGINT NOT NULL,
-    director_id BIGINT NOT NULL,
-    PRIMARY KEY (episode_id, director_id),
-    FOREIGN KEY (episode_id) REFERENCES tb_episodes(episode_id),
     FOREIGN KEY (director_id) REFERENCES tb_directors(director_id)
 );

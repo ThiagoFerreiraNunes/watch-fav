@@ -4,9 +4,6 @@ import com.watchfav.api.dto.season.PostSeasonDTO;
 import com.watchfav.api.dto.season.PutSeasonDTO;
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Table(name = "tb_seasons")
 @Entity(name = "Season")
 public class Season {
@@ -22,12 +19,12 @@ public class Season {
     @Column(name = "release_year")
     private Integer releaseYear;
 
+    @Column(name = "episodes")
+    private Integer episodes;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "series_id")
     private Series series;
-
-    @OneToMany(mappedBy = "season")
-    private List<Episode> episodes = new ArrayList<>();
 
     @Column(name = "is_available")
     private Boolean isAvailable;
@@ -37,6 +34,7 @@ public class Season {
     public Season(Series series, PostSeasonDTO data) {
         this.number = data.number();
         this.releaseYear = data.releaseYear();
+        this.episodes = data.episodes();
         this.series = series;
         this.isAvailable = true;
     }
@@ -57,7 +55,7 @@ public class Season {
         return series;
     }
 
-    public List<Episode> getEpisodes() {
+    public Integer getEpisodes() {
         return episodes;
     }
 
@@ -68,6 +66,7 @@ public class Season {
     public void updateData(PutSeasonDTO data) {
         if(data.number() != null) this.number = data.number();
         if(data.releaseYear() != null) this.releaseYear = data.releaseYear();
+        if(data.episodes() != null) this.episodes = data.episodes();
     }
 
     public void delete() {
