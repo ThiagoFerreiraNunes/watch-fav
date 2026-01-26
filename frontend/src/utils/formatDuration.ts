@@ -1,4 +1,6 @@
-export const formatDuration = (duration: string): string => {
+export const formatDuration = (duration?: string): string => {
+  if (!duration) return "Duração indefinida";
+
   const parts = duration.split(":");
 
   if (parts.length < 2) return duration;

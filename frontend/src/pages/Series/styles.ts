@@ -8,9 +8,4 @@ export const Container = styled.section`
   flex-direction: column;
   align-items: center;
   gap: 40px;
-
-  > div {
-    display: flex;
-    gap: 10px;
-  }
 `;

@@ -7,7 +7,7 @@ type Props = {
   $isThisPage: boolean;
 };
 
-export const StyledLink = styled(Link)<Props>`
+export const StyledLinkHome = styled(Link)<Props>`
   text-decoration: none;
   font-size: 24px;
   color: white;
